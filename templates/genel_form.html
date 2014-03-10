@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>{{baslik}}</title>
+  </head>
+  <body>
+    <h1>{{baslik}} Formu</h1>
+    {% if form.errors %}
+      <font color="red">Hatalı yerleri duzeltiniz</font>
+    {% endif %}
+    <form method="POST">
+   
+    <table border=1>
+      {{form}} 
+    </table>
+    <input type="submit" value="Gönder">
+    {% if ID %}
+	<p><a href="?id={{ID}}&sil=1">Bu Kaydı Sil</a></p>
+    {% endif %}
+    </form>
+  </body>
+
+</html>

@@ -1,0 +1,29 @@
+<html>
+
+<head>
+<title>Ogretim Elemani Ekleme</title>
+</head>
+
+<body>
+<h1>Ogretim Elemani Ekleme Formu</h1>
+{% if hatalar %}
+Aşağıdaki hataları düzeltip yeniden gönderin
+<font color="red">
+{{ hatalar|unordered_list}}
+</font>
+
+{% endif %}
+<form method="POST" action="/yonetim/ogretim_elemani_ekleme">
+
+<table border=1>
+<tr><th>Adi:</th> <td><input type="text" name="adi" value="{{adi}}"></td></tr>
+<tr><th>Soyadi:</th> <td><input type="text" name="soyadi" value="{{soyadi}}"></td></tr>
+<tr><th>Telefonu:</th> <td><input type="text" name="telefonu" value="{{telefonu}}"></td></tr>
+<tr><th>E-Posta Adresi:</th> <td><input type="text" name="e_posta_adresi" value="{{e_posta_adresi}}"></td></tr>
+</table>
+
+<input type="submit" value="Gönder">
+</form>
+
+</body>
+</html>
