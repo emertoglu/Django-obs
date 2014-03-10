@@ -28,6 +28,11 @@ def ogretim_elemanlari_listesi(request):
 	  Q(adi__contains=aranacak_kelime) | Q(soyadi__contains=aranacak_kelime))
   ogretim_elemanlari_sayfalari = Paginator(ogretim_elemanlari_tumu, 5)
   ogretim_elemanlari = ogretim_elemanlari_sayfalari.page(int(sayfa))
+  
+  for ogrelm in ogretim_elemanlari:
+    verdigi_dersler = Ders.objects.filter(ogretim_elemani = ogrelm)
+    ogrelm.verdigi_dersler = verdigi_dersler
+  
   return render_to_response('listele.html', locals())
 
 def ogretim_elemani_ekleme(request):
