@@ -5,7 +5,7 @@ from django.http import *
 from yonetim.forms import *
 from django.core.paginator import Paginator
 from django.db.models import Q
-
+from django.forms.models import modelformset_factory
 
 def ogretim_elemanlari_listesi(request):
   siralama='soyadi'
@@ -64,3 +64,19 @@ def ogretim_elemani_ekleme(request):
   
   return render_to_response('genel_form.html',{'form':form,'baslik':'Ogretim Elemani Ekleme','ID':ogrelmid},
 						context_instance=RequestContext(request))
+
+def coklu_ogretim_elemani_ekleme(request):
+   OgretimElemaniFormuKumesi = modelformset_factory(OgretimElemani,fields=('unvani','adi','soyadi'),can_delete=True)
+   
+   if request.method == 'POST':
+     formkumesi = OgretimElemaniFormuKumesi(request.POST)
+     if formkumesi.is_valid():
+       formkumesi.save()
+       return HttpResponseRedirect('/yonetim/coklu-ogretim-elemani-ekleme')
+     
+   else:
+       formkumesi = OgretimElemaniFormuKumesi()
+   return render_to_response(
+		'coklu_ogretim_elemani.html',
+		locals(),
+		context_instance = RequestContext(request))

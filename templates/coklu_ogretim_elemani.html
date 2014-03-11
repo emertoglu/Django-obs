@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>Coklu Ogretim Elemani Ekleme</title>
+  </head>
+  <body>
+    <h1>Ogretim Elemanlari</h1>
+    
+    <form method="POST">
+    {{formkumesi.management_form}}
+    {% for form in formkumesi %}
+    <table border=1>
+      {{form}} 
+    </table>
+    <p>
+    {% endfor %}
+    <input type="submit" value="Gönder">
+    </form>
+  </body>
+
+</html>

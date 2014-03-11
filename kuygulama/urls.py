@@ -19,5 +19,5 @@ urlpatterns = patterns('',
     
     url(r'^yonetim/listele$', 'yonetim.views.ogretim_elemanlari_listesi'),
     url(r'^yonetim/ogretim_elemani_ekle$', 'yonetim.views.ogretim_elemani_ekleme'),
-    
+    url(r'^yonetim/coklu-ogretim-elemani-ekleme$', 'yonetim.views.coklu_ogretim_elemani_ekleme'),
 )
