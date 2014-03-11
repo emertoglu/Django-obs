@@ -1,20 +1,36 @@
 <html>
-
 <head>
+{% load filtrelerim %}
 <title>Ogretim Elemanları Listesi</title>
 </head>
 <body>
+
 <h1>Liste:</h1>
+<form method="GET">
+{{ arama_formu.aranacak_kelime.errors }}
+{{ arama_formu.aranacak_kelime.labels }}
+{{ arama_formu.aranacak_kelime }}
+
+<input type="submit" value="Bul">
+</form>
+
+{% if aranacak_kelime %}
+  <h3>Aradiginiz "{{aranacak_kelime}}" için bulunan sonuçlar:</h3>
+{% endif %}
+
 <table border="1">
 <tr>
   <th>Sıra</th>
+  <th>Unvani</th>
   {% if olcut == '1' %}<th class="siralanan">
   {% else %} <th> {% endif %} <a href="?sirala=1">Adı</a></th>
+
   {% if olcut == '2' %}<th class="siralanan">
   {% else %} <th> {% endif %} <a href="?sirala=2">Soyadi</th>
   <th>Telefonu</th>
   {% if olcut == '3' %}<th class="siralanan">
   {% else %} <th> {% endif %} <a href="?sirala=3">E-Posta</th>
+  <th>Verdigi Dersler</th>
 </tr>
 
 {% for o in ogretim_elemanlari %}
@@ -26,6 +42,7 @@
   <td><a href="/yonetim/ogretim_elemani_ekle?id={{ o.soyadi }}">{{ o.soyadi }}</td>
   <td>{{ o.telefonu }}</td>
   <td>{{ o.e_posta_adresi }}</td>
+  <td>{{ o.id|ders_bul|unordered_list }}</td>
 </tr>
 {% endfor %}
 </table>
