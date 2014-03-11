@@ -36,33 +36,31 @@ def ogretim_elemanlari_listesi(request):
   return render_to_response('listele.html', locals())
 
 def ogretim_elemani_ekleme(request):
+  
   ogrelmid=request.GET.get('id')
   if ogrelmid:
     try:
       ogrelm=OgretimElemani.objects.get(id = ogrelmid)
+      form = OgretimElemaniFormu(instance=ogrelm)
     except:
       return HttpResponse(u'Aradiginiz ogretim elemani bulunamiyor: ID=%s'%ogrelmid)
+  else:
+    form = OgretimElemaniFormu()
+    
+    
   if request.GET.get('sil'):
     ogrelm.delete()
     return HttpResponseRedirect('/yonetim/listele')
   
   if request.method=='POST':
-    form=OgretimElemaniFormu(request.POST)
+    if ogrelmid:
+      form = OgretimElemaniFormu(request.POST, instance=ogrelm)
+    else:
+      form = OgretimElemaniFormu(request.POST)
+    
     if form.is_valid():
-      temiz_veri=form.cleaned_data
-      if not ogrelmid: ogrelm=OgretimElemani()
-      ogrelm=OgretimElemani(
-		    adi=temiz_veri['adi'],
-		    soyadi=temiz_veri['soyadi'],
-		    telefonu=temiz_veri['telefonu'],
-		    e_posta_adresi=temiz_veri['e_posta_adresi'])
-		    
-      ogrelm.unvani = temiz_veri['unvani']
-      ogrelm.save()
+      form.save()
       return HttpResponseRedirect('/yonetim/listele')
-  else:
-      if ogrelmid: form=OgretimElemaniFormu(initial = ogrelm.__dict__)
-      else: form=OgretimElemaniFormu()
   
   return render_to_response('genel_form.html',{'form':form,'baslik':'Ogretim Elemani Ekleme','ID':ogrelmid},
 						context_instance=RequestContext(request))

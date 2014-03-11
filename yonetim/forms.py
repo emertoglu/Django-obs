@@ -1,17 +1,12 @@
 from django import forms
+from django.forms import ModelForm
+from models import *
+from django.forms import Textarea
 
-class OgretimElemaniFormu(forms.Form):
-  unvansecenekleri = (('AG',u'Arastirma Gorevlisi'),
-			('DR',u'Doktor'),
-			('YD',u'Yardimci Docent Doktor'),
-			('DD',u'Docent Doktor'),
-			('PD',u'Profesor Doktor'),)
-  unvani = forms.ChoiceField(label="Unvani", choices=unvansecenekleri, required=False)
-  adi = forms.CharField(label="Adi")
-  soyadi = forms.CharField(label="Soyadi")
-  telefonu = forms.CharField(label="Telefon Numarasi" , required = False)
-  e_posta_adresi = forms.EmailField(label="E-Posta Adresi", required = False)
-  
+class OgretimElemaniFormu(ModelForm):
+  class Meta:
+    model = OgretimElemani
+    
   def clean_e_posta_adresi(self):
     adres = self.cleaned_data['e_posta_adresi']
     if '@' in adres:
@@ -19,6 +14,21 @@ class OgretimElemaniFormu(forms.Form):
       if kullanici in('root', 'admin', 'administrator'):
 	raise forms.ValidationError('Bu adres gecersizdir')
     return adres
+
+class DersFormu(ModelForm):
+  class Meta:
+    model = Ders
+    widgets = {
+	  'tanimi':Textarea(attrs={'cols':35, 'rows':5}),
+      }
+
+class OgretimElemaniAltFormu(ModelForm):
+  class Meta:
+    model = OgretimElemani
+    fields = ('adi','soyadi','e_posta_adresi')
+    #exclude=('unvani','telefonu') bu da ayni gorevi gorur
+    # fields kullanarak hangi sirada gozukmesini istiyorsak ayarlayabiliriz
+    # yada exclude diyerek istemedigimiz alanlari formdan cikartabiliriz
 
 class AramaFormu(forms.Form):
   aranacak_kelime = forms.CharField()
