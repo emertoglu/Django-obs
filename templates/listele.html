@@ -44,7 +44,7 @@
   <th>Telefonu</th>
   {% if olcut == '3' %}<th class="siralanan">
   {% else %} <th> {% endif %} <a href="?sirala=3">E-Posta</th>
-  <th>Verdigi Dersler</th>
+  <!--<th>Verdigi Dersler</th> -->
 </tr>
 
 {% for o in ogretim_elemanlari %}
@@ -56,7 +56,7 @@
   <td><a href="/yonetim/ogretim_elemani_ekle?id={{ o.soyadi }}">{{ o.soyadi }}</td>
   <td>{{ o.telefonu }}</td>
   <td>{{ o.e_posta_adresi }}</td>
-  <td>{{ o.id|ders_bul|unordered_list }}</td>
+  <!-- <td>{{ o.id|ders_bul|unordered_list }}</td> -->
 </tr>
 {% endfor %}
 </table>

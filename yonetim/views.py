@@ -30,9 +30,23 @@ def cerez_deneme(request):
 	      u'Sevdigin cerez budur: <b>%s</b>' %sevdigim_cerez.decode('utf-8'))
 
 def ogretim_elemanlari_listesi(request):
-  siralama='soyadi'
-  olcut=request.GET.get('sirala')
-  sayfa = request.GET.get('sayfa',1)
+  #session yapisina gecildi
+  #kullanici oturumlarini kaydedebilmek icin bir sozluk gibi kullanacagim.
+  if request.GET.get('sirala'):
+    request.session['ogretim_elemani_siralama']=request.GET['sirala']
+  if not 'ogretim_elemani_siralama' in request.session:
+    request.session['ogretim_elemani_siralama']='1'
+  
+  olcut = request.session['ogretim_elemani_siralama']
+  #sayfa = request.GET.get('sayfa',1) 
+  # hangi sayfada kaldigini da kaydetmek icin bu satiri degistiriyorum
+  
+  if request.GET.get('sayfa'):
+    request.session['ogretim_elemani_sayfa']=request.GET['sayfa']
+  if not 'ogretim_elemani_sayfa' in request.session:
+    request.session['ogretim_elemani_sayfa']='1'
+  sayfa = request.session['ogretim_elemani_sayfa']
+  
   if olcut:
     siralamaolcutleri={'1':'adi',
 		      '2':'soyadi',
@@ -41,19 +55,20 @@ def ogretim_elemanlari_listesi(request):
       siralama=siralamaolcutleri[olcut]
   
   ogretim_elemanlari_tumu = OgretimElemani.objects.order_by(siralama)
-  arama_formu = AramaFormu()
+  
   if request.GET.get('aranacak_kelime'):
     arama_formu = AramaFormu(request.GET)
     if arama_formu.is_valid():
       aranacak_kelime = arama_formu.cleaned_data['aranacak_kelime']
       ogretim_elemanlari_tumu = OgretimElemani.objects.filter(
 	  Q(adi__contains=aranacak_kelime) | Q(soyadi__contains=aranacak_kelime))
-  ogretim_elemanlari_sayfalari = Paginator(ogretim_elemanlari_tumu, 5)
-  ogretim_elemanlari = ogretim_elemanlari_sayfalari.page(int(sayfa))
   
-  for ogrelm in ogretim_elemanlari:
-    verdigi_dersler = Ders.objects.filter(ogretim_elemani = ogrelm)
-    ogrelm.verdigi_dersler = verdigi_dersler
+  ogretim_elemanlari_sayfalari = Paginator(ogretim_elemanlari_tumu, 5)
+  ogretim_elemanlari = ogretim_elemanlari_sayfalari.page(int(sayfa)) 
+  
+  #for ogrelm in ogretim_elemanlari:
+  #  verdigi_dersler = Ders.objects.filter(ogretim_elemani = ogrelm)
+  #  ogrelm.verdigi_dersler = verdigi_dersler
   
   return render_to_response('listele.html', locals())
 
