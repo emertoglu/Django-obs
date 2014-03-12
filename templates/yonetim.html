@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
     
+    
+    
     <title>Yonetim Anasayfa</title>
 
     <!-- Bootstrap core CSS -->
@@ -16,13 +18,29 @@
     <!-- Custom styles for this template -->
     <link href="theme.css" rel="stylesheet">
   </head>
-  <body>
+  <body> 
     <h1>Yapmak İstediğiniz İşlemler</h1>
-    <p><a href="/yonetim/ogretim_elemani_ekle">Yeni Kayıt Ekle</p>
-    <p><a href="/yonetim/listele">Var Olan Kayıtları Listele</p>
-    <p><a href="/yonetim/coklu-ogretim-elemani-ekleme">Çoklu Öğretim Elemani Ekle</p>
-    <p><a href="/yonetim/">Anasayfa</p>
-  
+    
+    {% if request.user.is_authenticated %}
+      <p><h3>Hosgeldiniz {{ request.user.get_full_name }}</h3></p>
+      <br>
+    
+      <p>İşlemler için aşağıdaki köprüleri kullanınız</p>
+      <p><a href="/yonetim/ogretim_elemani_ekle"/>Yeni Kayıt Ekle</p>
+      <p><a href="/yonetim/listele"/>Var Olan Kayıtları Listele</p>
+      <p><a href="/yonetim/coklu-ogretim-elemani-ekleme"/>Çoklu Öğretim Elemani Ekle</p>
+      <p><a href="/yonetim/"/>Anasayfa</p>
+    
+      <p><a href="?cikis=cikis_yap"/>Çıkış Yap</p>
+    {% else %}
+      <h3>Kullanici Girisi</h3>
+      <form method="POST">
+      {% csrf_token %}
+      <table border=1>
+	{{ giris_formu }}
+      </table>
+      <input type="submit" name="giris_yap" value="Giriş Yap"/> 
+    {% endif %}
+    
   </body>
-
 </html>

@@ -6,11 +6,33 @@ from yonetim.forms import *
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.forms.models import modelformset_factory
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import *
+
 import random
 import time
 
+
 def yonetim_anasayfa(request):
-  return render_to_response('yonetim.html')
+  if request.GET.get('cikis'):
+    logout(request)
+    return HttpResponseRedirect('/yonetim/')
+  
+  if request.POST.get('giris_yap'):
+    giris_formu = AuthenticationForm(data =request.POST)
+    if giris_formu.is_valid():
+      username = request.POST['username']
+      password = request.POST['password']
+      kullanici = authenticate(username=username, password=password)
+      
+      if kullanici is not None:
+	if kullanici.is_active:
+	  login(request, kullanici)
+  else:
+    giris_formu = AuthenticationForm()
+  
+  return render_to_response('yonetim.html', locals(), context_instance=RequestContext(request))
 
 def cerez_deneme(request):
   cerez_listesi = ['Findik','Fistik','Ceviz','Badem','Leblebi','Misir Kavurgasi']
@@ -29,6 +51,7 @@ def cerez_deneme(request):
     return HttpResponse(
 	      u'Sevdigin cerez budur: <b>%s</b>' %sevdigim_cerez.decode('utf-8'))
 
+@login_required
 def ogretim_elemanlari_listesi(request):
   #session yapisina gecildi
   #kullanici oturumlarini kaydedebilmek icin bir sozluk gibi kullanacagim.
@@ -72,6 +95,7 @@ def ogretim_elemanlari_listesi(request):
   
   return render_to_response('listele.html', locals())
 
+@login_required
 def ogretim_elemani_ekleme(request):
   
   ogrelmid=request.GET.get('id')
@@ -101,7 +125,7 @@ def ogretim_elemani_ekleme(request):
   
   return render_to_response('genel_form.html',{'form':form,'baslik':'Ogretim Elemani Ekleme','ID':ogrelmid},
 						context_instance=RequestContext(request))
-
+@login_required
 def coklu_ogretim_elemani_ekleme(request):
    OgretimElemaniFormuKumesi = modelformset_factory(OgretimElemani,fields=('unvani','adi','soyadi'),can_delete=True)
    
