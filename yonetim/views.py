@@ -7,6 +7,9 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.forms.models import modelformset_factory
 
+def yonetim_anasayfa(request):
+  return render_to_response('yonetim.html')
+
 def ogretim_elemanlari_listesi(request):
   siralama='soyadi'
   olcut=request.GET.get('sirala')
