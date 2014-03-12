@@ -6,9 +6,28 @@ from yonetim.forms import *
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.forms.models import modelformset_factory
+import random
+import time
 
 def yonetim_anasayfa(request):
   return render_to_response('yonetim.html')
+
+def cerez_deneme(request):
+  cerez_listesi = ['Findik','Fistik','Ceviz','Badem','Leblebi','Misir Kavurgasi']
+  if not 'sevdigim_cerez' in request.COOKIES:
+    sevdigim_cerez = random.choice(cerez_listesi)
+    gun = 7
+    son_kullanma_tarihi = time.strftime('%a, %d-%b-%Y %H:%M:%S GMT',
+			    time.localtime(time.time()+gun*24*60*60))
+    response = HttpResponse(
+		  u'Sevdigin cerez yoktu, sana bu cerezi sevdirdim: <b>%s</b>' %
+		  sevdigim_cerez.decode('utf-8'))
+    response.set_cookie('sevdigim_cerez',sevdigim_cerez, expires=son_kullanma_tarihi)
+    return response
+  else:
+    sevdigim_cerez = request.COOKIES['sevdigim_cerez']
+    return HttpResponse(
+	      u'Sevdigin cerez budur: <b>%s</b>' %sevdigim_cerez.decode('utf-8'))
 
 def ogretim_elemanlari_listesi(request):
   siralama='soyadi'

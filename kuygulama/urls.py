@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
     
+    url(r'^cerez-deneme/$', 'yonetim.views.cerez_deneme'),
     url(r'^yonetim/$', 'yonetim.views.yonetim_anasayfa'),
     url(r'^yonetim/listele$', 'yonetim.views.ogretim_elemanlari_listesi'),
     url(r'^yonetim/ogretim_elemani_ekle$', 'yonetim.views.ogretim_elemani_ekleme'),
