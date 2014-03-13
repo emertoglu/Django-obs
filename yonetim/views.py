@@ -13,7 +13,7 @@ from django.contrib.auth import *
 import random
 import time
 
-
+@login_required
 def yonetim_anasayfa(request):
   if request.GET.get('cikis'):
     logout(request)
@@ -71,9 +71,9 @@ def ogretim_elemanlari_listesi(request):
   sayfa = request.session['ogretim_elemani_sayfa']
   
   if olcut:
-    siralamaolcutleri={'1':'adi',
-		      '2':'soyadi',
-		      '3':'e_posta_adresi'}
+    siralamaolcutleri={'1':'first_name',
+		      '2':'last_name',
+		      '3':'email'}
     if olcut in siralamaolcutleri:
       siralama=siralamaolcutleri[olcut]
   
@@ -84,7 +84,7 @@ def ogretim_elemanlari_listesi(request):
     if arama_formu.is_valid():
       aranacak_kelime = arama_formu.cleaned_data['aranacak_kelime']
       ogretim_elemanlari_tumu = OgretimElemani.objects.filter(
-	  Q(adi__contains=aranacak_kelime) | Q(soyadi__contains=aranacak_kelime))
+	  Q(first_name__contains=aranacak_kelime) | Q(last_name__contains=aranacak_kelime))
   
   ogretim_elemanlari_sayfalari = Paginator(ogretim_elemanlari_tumu, 5)
   ogretim_elemanlari = ogretim_elemanlari_sayfalari.page(int(sayfa)) 

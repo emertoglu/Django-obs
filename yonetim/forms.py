@@ -30,10 +30,10 @@ class DersFormu(ModelForm):
 	  'tanimi':Textarea(attrs={'cols':35, 'rows':5}),
       }
 
-class OgretimElemaniAltFormu(ModelForm):
-  class Meta:
-    model = OgretimElemani
-    fields = ('adi','soyadi','e_posta_adresi')
+#class OgretimElemaniAltFormu(ModelForm):
+#  class Meta:
+#    model = OgretimElemani
+#    fields = ('username','parolasi','email')
     #exclude=('unvani','telefonu') bu da ayni gorevi gorur
     # fields kullanarak hangi sirada gozukmesini istiyorsak ayarlayabiliriz
     # yada exclude diyerek istemedigimiz alanlari formdan cikartabiliriz

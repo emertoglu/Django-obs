@@ -19,28 +19,69 @@
     <link href="theme.css" rel="stylesheet">
   </head>
   <body> 
-    <h1>Yapmak İstediğiniz İşlemler</h1>
+    <body role="document">
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Yönetim</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+		<li class="dropdown-header">Nav header</li>                
+		<li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+		<li class="divider"></li>
+		<li class="dropdown-header">Nav header</li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div>
+      <br><br>
+      <h1>Yapmak İstediğiniz İşlemler</h1>
     
-    {% if request.user.is_authenticated %}
-      <p><h3>Hosgeldiniz {{ request.user.get_full_name }}</h3></p>
-      <br>
-    
-      <p>İşlemler için aşağıdaki köprüleri kullanınız</p>
-      <p><a href="/yonetim/ogretim_elemani_ekle"/>Yeni Kayıt Ekle</p>
-      <p><a href="/yonetim/listele"/>Var Olan Kayıtları Listele</p>
-      <p><a href="/yonetim/coklu-ogretim-elemani-ekleme"/>Çoklu Öğretim Elemani Ekle</p>
-      <p><a href="/yonetim/"/>Anasayfa</p>
-    
-      <p><a href="?cikis=cikis_yap"/>Çıkış Yap</p>
-    {% else %}
-      <h3>Kullanici Girisi</h3>
-      <form method="POST">
-      {% csrf_token %}
-      <table border=1>
-	{{ giris_formu }}
-      </table>
-      <input type="submit" name="giris_yap" value="Giriş Yap"/> 
-    {% endif %}
-    
+      {% if request.user.is_authenticated %}
+	<p><h3>Hosgeldiniz {{ request.user.get_full_name }}</h3></p>
+	<br>
+      
+	<p>İşlemler için aşağıdaki köprüleri kullanınız</p>
+	<p><a href="/yonetim/ogretim_elemani_ekle"/>Yeni Kayıt Ekle</p>
+	<p><a href="/yonetim/listele"/>Var Olan Kayıtları Listele</p>
+	<p><a href="/yonetim/coklu-ogretim-elemani-ekleme"/>Çoklu Öğretim Elemani Ekle</p>
+	<p><a href="/yonetim/"/>Anasayfa</p>
+      
+	<p><a href="?cikis=cikis_yap"/>Çıkış Yap</p>
+      {% else %}
+	<h3>Kullanici Girisi</h3>
+	<form method="POST">
+	{% csrf_token %}
+	<table border=1>
+	  {{ giris_formu }}
+	</table>
+	<input type="submit" name="giris_yap" value="Giriş Yap"/> 
+      {% endif %}
+    </div>
   </body>
 </html>
