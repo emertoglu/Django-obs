@@ -3,6 +3,8 @@ from django.forms import ModelForm
 from models import *
 from django.forms import Textarea
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import Group
+
 
 class OgretimElemaniFormu(ModelForm):
   parolasi=forms.CharField(label="Parolasi",
@@ -19,6 +21,9 @@ class OgretimElemaniFormu(ModelForm):
 	instance.password=make_password(self.cleaned_data['parolasi'])
       if commit:
 	instance.save()
+	if instance.group.filter(name='ogretimelemanlari'):
+	  grp = Group.objects.get(name='ogretimelemanlari')
+	  instance.group.add(grp)
       return instance
     
   

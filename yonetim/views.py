@@ -6,14 +6,22 @@ from yonetim.forms import *
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.forms.models import modelformset_factory
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import *
 
 import random
 import time
 
-@login_required
+
+def yonetici_kontrol(user):
+  if user:
+    if user.groups.filter(name='yoneticiler').count() > 0:
+      return True
+  return False
+
+#@login_required
+@user_passes_test(yonetici_kontrol)
 def yonetim_anasayfa(request):
   if request.GET.get('cikis'):
     logout(request)
