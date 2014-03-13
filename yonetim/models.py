@@ -1,6 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class OgretimElemani(models.Model):
+class OgretimElemani(User):
     unvansecenekleri = (('AG',u'Arastirma Gorevlisi'),
 			('DR',u'Doktor'),
 			('YD',u'Yardimci Docent Doktor'),
@@ -8,16 +9,13 @@ class OgretimElemani(models.Model):
 			('PD',u'Profesor Doktor'),)
     unvani = models.CharField(max_length=2, choices = unvansecenekleri,
 			      blank=True, verbose_name='Unvani')
-    adi = models.CharField(max_length=50, verbose_name='Adi')
-    soyadi = models.CharField(max_length=50, verbose_name='Soyadi')
-    telefonu = models.CharField(max_length=10, blank=True, verbose_name='Telefonu')
-    e_posta_adresi = models.EmailField(blank=True, verbose_name='E-Posta Adresi')
+    telefonu = models.CharField(max_length=10, blank=True, verbose_name='Telefon Numarasi')
     
     def __unicode__(self):
-      return u'%s,%s'%(self.soyadi, self.adi)
+      return u'%s,%s'%(self.first_name, self.last_name)
     
     class Meta:
-      ordering = ['soyadi']
+      ordering = ['last_name']
       
 class Ders(models.Model):
     kodu = models.CharField(max_length=10)
