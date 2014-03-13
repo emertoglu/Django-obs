@@ -2,18 +2,26 @@ from django import forms
 from django.forms import ModelForm
 from models import *
 from django.forms import Textarea
+from django.contrib.auth.hashers import make_password
 
 class OgretimElemaniFormu(ModelForm):
+  parolasi=forms.CharField(label="Parolasi",
+		    help_text='Parola yazilmazsa onceki parola gecerlidir',
+		    required=False)
+  
   class Meta:
     model = OgretimElemani
+    fields = ('unvani','first_name','last_name',
+	       'username','parolasi','email','telefonu')
+    def save(self,commit=True):
+      instance = super(OgretimElemaniFormu,self).save(commit=False)
+      if self.cleaned_data.get('parolasi'):
+	instance.password=make_password(self.cleaned_data['parolasi'])
+      if commit:
+	instance.save()
+      return instance
     
-  def clean_e_posta_adresi(self):
-    adres = self.cleaned_data['e_posta_adresi']
-    if '@' in adres:
-      (kullanici, alan) = adres.split('@')
-      if kullanici in('root', 'admin', 'administrator'):
-	raise forms.ValidationError('Bu adres gecersizdir')
-    return adres
+  
 
 class DersFormu(ModelForm):
   class Meta:
