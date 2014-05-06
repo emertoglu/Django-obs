@@ -1,6 +1,11 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import *
+from django.http import *
+from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponseRedirect
 
 
 def giris_sayfasi(request):

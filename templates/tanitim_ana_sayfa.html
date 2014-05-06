@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Tanitim Ana Sayfasi</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="/static/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="theme.css" rel="stylesheet">
+  </head>
+  <body>
+    <h1>Okul Tanitim Sayfasidir</h1>
+    {% if request.user.is_authenticated %}
+      <h3>Merhaba {{ request.user.get_full_name }}</h3>
+      <p><a href="/tanitim/ogretim-elemanlari-listesi/">Okulumuz Ogretmenleri</a></p>
+      <p><a href="/tanitim/profil/">Profilim</a></p>
+      <p><a href="" onClick="window.open('/accounts/password','parola_degistirme_penceresi','width=400', 'height=200', 'resizable=yes')">ParolaDegistir</a>
+      <p><a href="?cikis=cikis_yap">Çıkış Yap</a>
+    {% else %}
+      <h3>Kullanici Girisi</h3>
+      <form method="POST">
+      {% csrf_token %}
+      <table border=1>
+      {{ giris_formu }}
+      </table>
+      <input type="submit" name="giris_yap" value="Giriş Yap"/></td>
+      <p>Henüz Kayıtlı Değilseniz <a href="/accounts/register/">Buraya Tıklayarak Kayıt Olunuz</a></p>
+    {% endif %}
+  </body>
+</html>
