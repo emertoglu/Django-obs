@@ -24,3 +24,13 @@ def giris_sayfasi(request):
       else:
 	giris_formu = AuthenticationForm()
       return render_to_response('tanitim_ana_sayfa.html',locals(),context_instance=RequestContext(request))
+
+def register(request):
+  if request.method == 'POST':
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      form.save()
+      return HttpResponseRedirect("/tanitim/")
+    else:
+      form=UserCreationForm()
+    return render_to_response('registration/register.html',locals(),context_instance=RequestContext(request))
